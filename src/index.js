@@ -1,38 +1,44 @@
-'use strict';
-
 import {extname, basename} from 'path';
 import {minify} from 'uglify-js';
 
+const permittedOptions = [
+  'mangle', 'compress',
+];
+
 export default function (options = {}) {
-
-
   return function exhibitUglify(path, contents) {
-    const results = {};
-
     if (extname(path) === '.js') {
       let minified;
 
+      const minifyOptions = {
+        fromString: true,
+        outSourceMap: options.sourceMap ? basename(path) + '.map' : null,
+      };
+
+      permittedOptions.forEach(name => {
+        minifyOptions[name] = options[name];
+      });
+
       try {
-        minified = minify(contents.toString(), {
-          fromString: true,
-          outSourceMap: options.sourceMap ? basename(path) + '.map' : null,
-        });
+        minified = minify(contents.toString(), minifyOptions);
       }
       catch (error) {
-        console.log('ERROR FROM UGLIFY-JS');
-        console.dir(error);
+        console.error('uglify source error', error);
 
-        throw new this.SourceError({
+        throw new this.util.SourceError({
           message: error.message,
-          path: path,
-          contents: contents,
+          path,
+          contents,
           // TODO: line/column
         });
       }
 
       const {code, map} = minified;
 
-      results[path] = code;
+      const results = {
+        [path]: code,
+      };
+
       if (options.sourceMap) results[`${path}.map`] = map;
 
       return results;
