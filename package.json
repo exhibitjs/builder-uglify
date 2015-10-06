@@ -1,7 +1,7 @@
 {
   "name": "exhibit-builder-uglify",
   "description": "Exhibit.js builder for minifying JavaScript files with UglifyJS",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Callum Locke",
   "bugs": {
     "url": "https://github.com/exhibitjs/exhibit-builder-uglify/issues"
