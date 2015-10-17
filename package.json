@@ -1,7 +1,7 @@
 {
   "name": "exhibit-builder-uglify",
   "description": "Minifies JavaScript files with UglifyJS",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Callum Locke",
   "babel": {
     "stage": 0,
