@@ -1,49 +1,52 @@
-import {extname, basename} from 'path';
 import {minify} from 'uglify-js';
+import path from 'path';
 
 const permittedOptions = [
   'mangle', 'compress',
 ];
 
-export default function (options = {}) {
-  return function exhibitUglify(path, contents) {
-    if (extname(path) === '.js') {
-      let minified;
+const defaults = {
+  include: '**/*.js',
+  sourceMap: false,
+};
 
-      const minifyOptions = {
-        fromString: true,
-        outSourceMap: options.sourceMap ? basename(path) + '.map' : null,
-      };
+export default function (options) {
+  options = Object.assign({}, defaults, options);
 
-      permittedOptions.forEach(name => {
-        minifyOptions[name] = options[name];
+  return function exhibitUglify(job) {
+    const {
+      matches, file, contents, util: {SourceError},
+    } = job;
+
+    if (!matches(options.include)) return contents;
+
+    const minifyOptions = {
+      fromString: true,
+      outSourceMap: options.sourceMap ? path.basename(file) + '.map' : null,
+    };
+
+    permittedOptions.forEach(name => {
+      minifyOptions[name] = options[name];
+    });
+
+    let minified;
+    try {
+      minified = minify(contents.toString(), minifyOptions);
+    }
+    catch (error) {
+      throw new SourceError({
+        message: error.message,
+        file,
+        contents,
       });
-
-      try {
-        minified = minify(contents.toString(), minifyOptions);
-      }
-      catch (error) {
-        console.error('uglify source error', error);
-
-        throw new this.util.SourceError({
-          message: error.message,
-          path,
-          contents,
-          // TODO: line/column
-        });
-      }
-
-      const {code, map} = minified;
-
-      const results = {
-        [path]: code,
-      };
-
-      if (options.sourceMap) results[`${path}.map`] = map;
-
-      return results;
     }
 
-    return contents;
+    const {code, map} = minified;
+
+    const results = {[file]: code};
+
+    if (options.sourceMap) results[`${file}.map`] = map;
+
+    return results;
   };
 }

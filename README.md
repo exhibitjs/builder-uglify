@@ -1,29 +1,30 @@
-# exhibit-builder-uglify [![NPM version][npm-image]][npm-url] [![Dependency Status][depstat-image]][depstat-url]
-
-> [Exhibit.js](https://github.com/exhibitjs/exhibit) builder plugin for minifying JavaScript files with [UglifyJS](https://github.com/mishoo/UglifyJS2).
-
-
-## Installation
-
-```sh
-$ npm install --save-dev exhibit-builder-uglify
-```
+> # uglify
+>
+> **Exhibit.js builder plugin**
+>
+> Minifies JavaScript files with [UglifyJS](https://github.com/mishoo/UglifyJS2).
+>
+> ```sh
+> $ npm install -D exhibit-builder-uglify
+> ```
+>
+> [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url] [![devDependency Status][devdepstat-image]][devdepstat-url] [![peerDependency Status][peerdepstat-image]][peerdepstat-url]
 
 
 ## Usage
 
 ```js
-exhibit('src')
   .use('uglify', options)
-  .build('dist');
 ```
 
 
 ## Options
 
-### `sourceMap`
+> **`include`** (string/array/function) — default: `**/*.js`
 
-Default: `null`
+Which files to process. Follows Exhibit’s [glob convention](https://github.com/exhibitjs/exhibit/blob/master/docs/glob-convention.md).
+
+> **`sourceMap`** (boolean) — default: `false`
 
 Whether to output a source map.
 
@@ -34,7 +35,6 @@ These are passed straight through to `UglifyJS.minify`:
 - `compress` (default: `true`)
 - `mangle` (default `true`)
 
-
 ## License
 
 MIT
@@ -44,8 +44,14 @@ MIT
 [npm-url]: https://npmjs.org/package/exhibit-builder-uglify
 [npm-image]: https://img.shields.io/npm/v/exhibit-builder-uglify.svg?style=flat-square
 
-[travis-url]: http://travis-ci.org/exhibitjs/exhibit-builder-uglify
-[travis-image]: https://img.shields.io/travis/exhibitjs/exhibit-builder-uglify.svg?style=flat-square
+[travis-url]: http://travis-ci.org/exhibitjs/builder-uglify
+[travis-image]: https://img.shields.io/travis/exhibitjs/builder-uglify.svg?style=flat-square
 
-[depstat-url]: https://david-dm.org/exhibitjs/exhibit-builder-uglify
-[depstat-image]: https://img.shields.io/david/exhibitjs/exhibit-builder-uglify.svg?style=flat-square
+[depstat-url]: https://david-dm.org/exhibitjs/builder-uglify
+[depstat-image]: https://img.shields.io/david/exhibitjs/builder-uglify.svg?style=flat-square
+
+[devdepstat-url]: https://david-dm.org/exhibitjs/builder-uglify#info=devDependencies
+[devdepstat-image]: https://img.shields.io/david/dev/exhibitjs/builder-uglify.svg?style=flat-square&label=devDeps
+
+[peerdepstat-url]: https://david-dm.org/exhibitjs/builder-uglify#info=peerDependencies
+[peerdepstat-image]: https://img.shields.io/david/peer/exhibitjs/builder-uglify.svg?style=flat-square&label=peerDeps
